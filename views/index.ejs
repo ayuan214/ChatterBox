@@ -39,14 +39,22 @@
           </span>
 
         </span>
+        <span ng-show="post.author">
+          posted by <a>{{post.author}}</a> |
+        </span>
           <span>
             <a href="#/posts/{{post._id}}">Comments</a>
           </span>
       </div>
 
       <form ng-submit="addPost()"
+        ng-show="isLoggedIn()"
         style="margin-top:30px;">
         <h3>Add a new post</h3>
+
+        <div ng-hide="isLoggedIn()">
+          <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+        </div>
 
         <div class="form-group">
           <input type="text"
@@ -88,8 +96,13 @@
   </div>
 
   <form ng-submit="addComment()"
+    ng-show="isLoggedIn()"
     style="margin-top:30px;">
     <h3>Add a new comment</h3>
+
+    <div ng-hide="isLoggedIn()">
+      <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
+    </div>
 
     <div class="form-group">
       <input type="text"
