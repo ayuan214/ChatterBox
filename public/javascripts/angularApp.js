@@ -70,6 +70,12 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
 	  });
 	};
 
+	o.get = function(id) {
+        return $http.get('/posts/' + id).then(function(res) {
+            return res.data;
+        });
+    };
+
 	o.upvote = function(post) {
 	  return $http.put('/posts/' + post._id + '/upvote', null, {
 	    headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -166,10 +172,7 @@ function($scope, posts, auth){
 }]);
 
 app.controller('PostsCtrl', [
-	'$scope',
-	'posts',
-	'post',
-	'auth',
+	'$scope', 'posts', 'post', 'auth',
 
 	function($scope, posts, post, auth){
 		$scope.post = post;
@@ -192,34 +195,32 @@ app.controller('PostsCtrl', [
 ]);
 
 app.controller('AuthCtrl', [
-'$scope',
-'$state',
-'auth',
-function($scope, $state, auth){
-  $scope.user = {};
+	'$scope','$state','auth',
+	function($scope, $state, auth){
+	  $scope.user = {};
 
-  $scope.register = function(){
-    auth.register($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
-    });
-  };
+	$scope.register = function(){
+		auth.register($scope.user).error(function(error){
+			$scope.error = error;
+			}).then(function(){
+			$state.go('home');
+		});
+	};
 
-  $scope.logIn = function(){
-    auth.logIn($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
-    });
-  };
-}])
+	$scope.logIn = function(){
+		auth.logIn($scope.user).error(function(error){
+			$scope.error = error;
+			}).then(function(){
+			$state.go('home');
+		});
+	};
+}]);
 
 app.controller('NavCtrl', [
-'$scope',
-'auth',
-function($scope, auth){
-  $scope.isLoggedIn = auth.isLoggedIn;
-  $scope.currentUser = auth.currentUser;
-  $scope.logOut = auth.logOut;
-}]);
+	'$scope', 'auth',
+	function($scope, auth){
+		$scope.isLoggedIn = auth.isLoggedIn;
+		$scope.currentUser = auth.currentUser;
+		$scope.logOut = auth.logOut;
+	}
+]);
