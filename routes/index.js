@@ -33,6 +33,7 @@ router.post('/posts', auth, function(req, res, next) {
   });
 });
 
+
 router.param('post', function(req, res, next, id) {
   var query = Post.findById(id);
 
@@ -50,6 +51,28 @@ router.get('/posts/:post', function(req, res, next) {
     if (err) { return next(err); }
 
     res.json(post);
+  });
+});
+
+router.delete('/posts/:post', auth, function(req, res) {
+  req.post.comments.forEach(function(id) {
+    Comment.remove({
+      _id: id
+    }, function(err) {
+      if (err) { return next(err)}
+    });
+  })
+  Post.remove({
+    _id: req.params.post
+  }, function(err, post) {
+    if (err) { return next(err); }
+    
+    // get and return all the posts after you delete one
+    Post.find(function(err, posts) {
+      if (err) { return next(err); }
+      
+      res.json(posts);
+    });
   });
 });
 

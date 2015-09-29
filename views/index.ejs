@@ -32,6 +32,7 @@
         {{post.upvotes}}
         <span class="glyphicon glyphicon-thumbs-down"
           ng-click="decreaseUpvotes(post)"></span>
+          
         <span style="font-size:20px; margin-left:10px;">
           <a ng-show="post.link" href="{{post.link}}">
             {{post.title}}
@@ -47,6 +48,8 @@
           <span>
             <a href="#/posts/{{post._id}}">Comments</a>
           </span>
+          <span ng-show="isLoggedIn()" class="glyphicon glyphicon-remove pull-right"
+          ng-click="deletepost(post)"></span>
       </div>
 
       <form ng-submit="addPost()"
